@@ -1,9 +1,10 @@
 <template>
-  <button :class="$style.example">{{ text }}</button>
+  <v-btn :class="$style.example">{{ text }}</v-btn>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+
 export default Vue.extend({
   props: {
     text: String

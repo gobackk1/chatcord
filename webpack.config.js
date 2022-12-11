@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
 module.exports = {
   mode: 'development',
@@ -24,7 +25,7 @@ module.exports = {
         loader: 'vue-loader'
       },
       {
-        test: /\.scss$/,
+        test: /\.s(c|a)ss$/,
         use: [
           {
             loader: 'vue-style-loader'
@@ -36,7 +37,13 @@ module.exports = {
             }
           },
           {
-            loader: 'sass-loader'
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+              sassOptions: {
+                indentedSyntax: true
+              }
+            }
           }
         ]
       },
@@ -79,6 +86,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html'
     }),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new VuetifyLoaderPlugin()
   ]
 }
