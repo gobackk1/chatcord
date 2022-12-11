@@ -23,5 +23,5 @@
     "quotes": ["error", "single"],
     "semi": ["error", "never"]
   },
-  "ignorePatterns": ["webpack.config.js", "/test"]
+  "ignorePatterns": ["webpack.config.js", "/test", "functions/lib", "functions/.eslintrc.js"]
 }
