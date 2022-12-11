@@ -9,6 +9,8 @@ const StylelintPlugin = require('stylelint-webpack-plugin')
 const NODE_ENV = process.env.NODE_ENV
 const isDevelopment = process.env.NODE_ENV === 'development'
 const isProduction = process.env.NODE_ENV === 'production'
+const enableSouceMap = isDevelopment
+
 module.exports = {
   entry: './src/main.ts',
   // context: path.resolve(__dirname, './src'),
@@ -38,7 +40,9 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true
+              modules: true,
+              importLoaders: 2,
+              sourceMap: enableSouceMap
             }
           },
           {
@@ -46,7 +50,8 @@ module.exports = {
             options: {
               implementation: require('sass'),
               sassOptions: {
-                indentedSyntax: true
+                indentedSyntax: true,
+                sourceMap: enableSouceMap
               }
             }
           }
@@ -61,7 +66,23 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true
+              modules: true,
+              sourceMap: enableSouceMap
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    'autoprefixer',
+                    {
+                      grid: true
+                    }
+                  ]
+                ]
+              }
             }
           }
         ]

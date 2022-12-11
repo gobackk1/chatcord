@@ -14,9 +14,8 @@ export default Vue.extend({
 <style module>
 .example {
   font-weight: bold;
-  padding: 0.5px;
-  opacity: 0.8;
   /* margin-bob: 3px; */
-  background: pink;
+  user-select: none;
+  transform: translate(0, 0);
 }
 </style>
