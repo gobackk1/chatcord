@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+  ],
+  "settings": {
+    "[javascript]": {
+      "editor.formatOnSave": true
+    },
+    "[vue]": {
+      "editor.formatOnSave": true
+    },
+    "[scss]": {
+      "editor.formatOnSave": true
+    },
+    "liveServer.settings.port": 5501
+  }
+}
