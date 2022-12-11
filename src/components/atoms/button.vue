@@ -6,9 +6,8 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  props: {
-    text: String
-  }
+  name: 'CcBtn',
+  props: { text: String }
 })
 </script>
 

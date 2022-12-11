@@ -17,6 +17,9 @@
     "[scss]": {
       "editor.formatOnSave": true
     },
+    "[json]": {
+      "editor.formatOnSave": true
+    },
     "liveServer.settings.port": 5501
   }
 }

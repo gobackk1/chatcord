@@ -3,7 +3,6 @@ import vuetify from '@/plugins/vuetify'
 import MyButton from '@/components/atoms/button.vue'
 
 Vue.config.productionTip = false
-
 new Vue({
   el: '#app',
   vuetify,

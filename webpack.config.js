@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const ESLintPlugin = require('eslint-webpack-plugin')
 
 const NODE_ENV = process.env.NODE_ENV
 const isDevelopment = process.env.NODE_ENV === 'development'
@@ -95,7 +96,11 @@ module.exports = {
       }
     }),
     new VueLoaderPlugin(),
-    new VuetifyLoaderPlugin()
+    new VuetifyLoaderPlugin(),
+    new ESLintPlugin({
+      extensions: ['.ts', '.js', '.vue'],
+      exclude: 'node_modules'
+    })
   ],
   ...(isProduction
     ? {
