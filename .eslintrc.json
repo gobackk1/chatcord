@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "jest": true
   },
   "extends": [
     "eslint:recommended",
@@ -22,5 +23,5 @@
     "quotes": ["error", "single"],
     "semi": ["error", "never"]
   },
-  "ignorePatterns": ["webpack.config.js"]
+  "ignorePatterns": ["webpack.config.js", "/test"]
 }
