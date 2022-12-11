@@ -1,0 +1,4 @@
+dist/**/*.css
+test/
+coverage/**
+node_modules/

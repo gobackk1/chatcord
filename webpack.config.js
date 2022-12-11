@@ -4,6 +4,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
+const StylelintPlugin = require('stylelint-webpack-plugin')
 
 const NODE_ENV = process.env.NODE_ENV
 const isDevelopment = process.env.NODE_ENV === 'development'
@@ -80,27 +81,38 @@ module.exports = {
   },
   target: ['web', 'es5'],
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true
-      }
-    }),
     new VueLoaderPlugin(),
     new VuetifyLoaderPlugin(),
-    new ESLintPlugin({
-      extensions: ['.ts', '.js', '.vue'],
-      exclude: 'node_modules'
-    })
+    ...(isProduction
+      ? [
+          new HtmlWebpackPlugin({
+            template: './public/index.html',
+            minify: {
+              removeComments: true,
+              collapseWhitespace: true,
+              removeRedundantAttributes: true,
+              useShortDoctype: true,
+              removeEmptyAttributes: true,
+              removeStyleLinkTypeAttributes: true,
+              keepClosingSlash: true,
+              minifyJS: true,
+              minifyCSS: true,
+              minifyURLs: true
+            }
+          })
+        ]
+      : [
+          new HtmlWebpackPlugin({
+            template: './public/index.html'
+          }),
+          new ESLintPlugin({
+            extensions: ['.ts', '.js', '.vue'],
+            exclude: 'node_modules'
+          }),
+          new StylelintPlugin({
+            extensions: ['.vue']
+          })
+        ])
   ],
   ...(isProduction
     ? {
