@@ -4,6 +4,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const StylelintPlugin = require('stylelint-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 
 const NODE_ENV = process.env.NODE_ENV
 const isDevelopment = process.env.NODE_ENV === 'development'
@@ -103,6 +104,9 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new VuetifyLoaderPlugin(),
+    new Dotenv({
+      path: `./.env.${process.env.NODE_ENV}`
+    }),
     ...(isProduction
       ? [
           new HtmlWebpackPlugin({
