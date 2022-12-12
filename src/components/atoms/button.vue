@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
+console.log(Vue.config.devtools, 'devtools')
 export default Vue.extend({
   name: 'CcBtn',
   props: { text: String }

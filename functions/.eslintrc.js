@@ -22,12 +22,13 @@ module.exports = {
     '/lib/**/*', // Ignore built files.
     '.eslintrc.js'
   ],
-  plugins: ['@typescript-eslint', 'import']
+  plugins: ['@typescript-eslint', 'import'],
   // rules は ../.eslintrc.json に合わせる
   rules: {
     indent: ['error', 2],
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
-    semi: ['error', 'never']
+    semi: ['error', 'never'],
+    'no-console': 'warn'
   }
 }

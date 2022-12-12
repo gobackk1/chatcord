@@ -2,7 +2,6 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
-const TerserPlugin = require('terser-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const StylelintPlugin = require('stylelint-webpack-plugin')
 
@@ -139,7 +138,16 @@ module.exports = {
     ? {
         optimization: {
           minimize: true,
-          minimizer: [[new TerserPlugin({ terserOptions: { compress: { drop_console: true } } })]]
+          minimizer: [
+            new webpack.optimize.TerserPlugin({
+              terserOptions: {
+                compress: {
+                  // TODO: 効果がないので調べる。解決するまで eslint no-console: warn で代用する。
+                  drop_console: true
+                }
+              }
+            })
+          ]
         }
       }
     : {
