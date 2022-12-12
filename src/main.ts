@@ -3,9 +3,13 @@ import vuetify from '@/plugins/vuetify'
 import router from '@/plugins/router'
 import store from '@/store'
 import MyButton from '@/components/atoms/button.vue'
+// import 'firebase/auth'
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
+import { getAuth, connectAuthEmulator } from 'firebase/auth'
+import { getFunctions, connectFunctionsEmulator } from 'firebase/functions'
 
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app'
+import { initializeApp, getApp } from 'firebase/app'
 // import { getAnalytics } from 'firebase/analytics'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -26,7 +30,17 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 // const analytics = getAnalytics(app)
 
+if (window.location.hostname === 'localhost') {
+  const db = getFirestore()
+  connectFirestoreEmulator(db, 'localhost', 8081)
+  const auth = getAuth()
+  connectAuthEmulator(auth, 'http://localhost:9099')
+  const functions = getFunctions(getApp())
+  connectFunctionsEmulator(functions, 'localhost', 5001)
+}
+
 Vue.config.productionTip = false
+
 new Vue({
   el: '#app',
   vuetify,

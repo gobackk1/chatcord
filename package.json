@@ -16,7 +16,8 @@
     "deploy": "npx firebase deploy",
     "deploy:hosting": "npx firebase deploy --only hosting",
     "deploy:firestore": "npx firebase deploy --only firestore",
-    "deploy:functions": "npx firebase deploy --only functions"
+    "deploy:functions": "npx firebase deploy --only functions",
+    "emulate": "npx firebase emulators:start"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.5.14",
