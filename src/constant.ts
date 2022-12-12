@@ -7,3 +7,5 @@ export const FIREBASE_CONFIG = {
   appId: '1:811151546699:web:df7471edefcd2084a2b0ce',
   measurementId: 'G-GB9CFS777E'
 }
+
+export const AUTH_API_ORIGIN = process.env.CC_AUTH_API_ORIGIN
