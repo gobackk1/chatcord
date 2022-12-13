@@ -5,12 +5,11 @@ import {
   connectAuthEmulator,
   GoogleAuthProvider,
   signInWithRedirect,
-  // createUserWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   sendEmailVerification,
   Auth
 } from 'firebase/auth'
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions'
-import { authAxios } from '@/plugins/axios'
 
 const isLocalHost = window.location.hostname === 'localhost'
 class Firebase {
@@ -41,12 +40,9 @@ class Firebase {
   async registerWithEmailAndPassword(email: string, password: string): Promise<void> {
     try {
       // Firebase AUTH REST API では onAuthStateChanged が発火しない
-      const res = await authAxios.post(`/accounts:signUp?key=${this.config.apiKey}`, {
-        email,
-        password
-      })
-      console.log(res, 'res')
-      // await createUserWithEmailAndPassword(this.auth, email, password)
+      // const res = await authAxios.post(`/accounts:signUp?key=${this.config.apiKey}`,{})
+
+      await createUserWithEmailAndPassword(this.auth, email, password)
       /**
        * AUTH emulator では emailVerified が機能しない
        * https://github.com/firebase/firebase-tools/issues/3990
