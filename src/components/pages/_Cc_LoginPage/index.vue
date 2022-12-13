@@ -1,9 +1,9 @@
 <template>
-  <div>home page</div>
+  <div>login page</div>
 </template>
 
 <script>
 export default {
-  name: 'CcHomePage'
+  name: 'Cc_AboutPage'
 }
 </script>

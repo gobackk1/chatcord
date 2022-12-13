@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: 'CcAboutPage'
+  name: 'Cc_AboutPage'
 }
 </script>
