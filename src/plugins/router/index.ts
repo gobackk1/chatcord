@@ -1,17 +1,15 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomePage from '@/components/pages/_Cc_HomePage'
+import VueRouter, { RouteConfig } from 'vue-router'
 import AboutPage from '@/components/pages/_Cc_AboutPage'
 import LoginPage from '@/components/pages/_Cc_LoginPage'
 import SignUpPage from '@/components/pages/_Cc_SignUpPage'
 
 Vue.use(VueRouter)
 
-export const routes = [
+export const routes: RouteConfig[] = [
   {
     path: '/',
-    name: 'home',
-    component: HomePage
+    redirect: '/login'
   },
   {
     path: '/about',

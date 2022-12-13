@@ -1,8 +1,8 @@
 <template>
-  <cc-login-template>
-    <v-form v-model="isFormValid" slot="form">
-      <v-card ref="form">
-        <v-card-title>ログイン</v-card-title>
+  <cc-signup-template>
+    <v-card ref="form" slot="form">
+      <v-form v-model="isFormValid">
+        <v-card-title>新規登録</v-card-title>
         <v-card-text>
           <cc-field-email @input="email = $event" />
           <cc-field-password @input="password = $event" />
@@ -13,28 +13,28 @@
             {{ successMessage }}
           </v-alert>
           <v-row justify="center"
-            ><v-btn @click="loginWithGoogle">googleアカウントでログインする</v-btn></v-row
+            ><v-btn @click="google">googleアカウントでログインする</v-btn></v-row
           >
         </v-card-text>
 
         <v-divider class="mt-1"></v-divider>
         <v-card-actions>
-          <v-btn to="/signup">
-            新規登録
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="login" :disabled="!isFormValid">
+          <v-btn to="/login">
             ログイン
           </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="register" :disabled="!isFormValid">
+            登録
+          </v-btn>
         </v-card-actions>
-      </v-card>
-    </v-form>
-  </cc-login-template>
+      </v-form>
+    </v-card>
+  </cc-signup-template>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import LoginTemplate from '@/components/templates/_Cc_LoginTemplate'
+import SignUpTemplate from '@/components/templates/_Cc_SignUpTemplate'
 import FieldPassword from '@/components/molecules/_Cc_FieldPassword'
 import FieldEmail from '@/components/molecules/_Cc_FieldEmail'
 import Firebase from '@/plugins/firebase'
@@ -46,7 +46,7 @@ import { ProfileState } from '@/store/modules/profile/types'
   components: {
     'cc-field-password': FieldPassword,
     'cc-field-email': FieldEmail,
-    'cc-login-template': LoginTemplate
+    'cc-signup-template': SignUpTemplate
   }
 })
 export default class Cc_SignUpPage extends Vue {
@@ -59,11 +59,17 @@ export default class Cc_SignUpPage extends Vue {
   successMessage = ''
   isFormValid = false
 
-  async login() {
-    // TODO: ログインメソッド実装
+  async register() {
+    try {
+      await Firebase.registerWithEmailAndPassword(this.email, this.password)
+      this.successMessage =
+        '登録したメールアドレスに確認メールを送信しました。メールを確認してアカウントを有効にしてください。'
+    } catch (error) {
+      this.errorMessage = error.message
+    }
   }
-  async loginWithGoogle() {
-    await Firebase.loginWithGoogle()
+  google() {
+    Firebase.loginWithGoogle()
   }
 }
 </script>
