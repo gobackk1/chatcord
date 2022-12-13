@@ -50,9 +50,7 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              implementation: require('sass'),
               sassOptions: {
-                indentedSyntax: true,
                 sourceMap: enableSouceMap
               }
             }
