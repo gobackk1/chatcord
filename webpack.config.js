@@ -164,7 +164,8 @@ module.exports = {
           },
           port: 8081,
           open: true,
-          hot: true
+          hot: true,
+          historyApiFallback: true
         }
       })
 }
