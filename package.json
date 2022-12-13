@@ -13,7 +13,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "login": "npx firebase login",
-    "deploy": "npx firebase deploy",
+    "deploy": "npx firebase deploy --except functions",
     "deploy:hosting": "npx firebase deploy --only hosting",
     "deploy:firestore": "npx firebase deploy --only firestore",
     "deploy:functions": "npx firebase deploy --only functions",
