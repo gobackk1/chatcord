@@ -5,6 +5,8 @@ const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const StylelintPlugin = require('stylelint-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
+const webpack = require('webpack')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const NODE_ENV = process.env.NODE_ENV
 const isDevelopment = process.env.NODE_ENV === 'development'
@@ -143,7 +145,7 @@ module.exports = {
         optimization: {
           minimize: true,
           minimizer: [
-            new webpack.optimize.TerserPlugin({
+            new TerserPlugin({
               terserOptions: {
                 compress: {
                   // TODO: 効果がないので調べる。解決するまで eslint no-console: warn で代用する。
