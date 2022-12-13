@@ -22,8 +22,13 @@ describe('Cc_FieldPassword', () => {
     test('emit', async () => {
       const input = wrapper.find('input')
       await input.setValue('test')
-      expect(wrapper.emitted().input!.length).toBe(1)
-      expect(wrapper.emitted().input![0][0]).toBe('test')
+      const emitted = wrapper.emitted()
+      if (emitted.input === undefined) {
+        throw new Error('failed')
+      } else {
+        expect(emitted.input.length).toBe(1)
+        expect(emitted.input[0][0]).toBe('test')
+      }
     })
     test('未入力の場合、「パスワードは必須です。」が表示されること', async () => {
       const input = wrapper.find('input')
