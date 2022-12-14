@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import AboutPage from '@/components/pages/_Cc_AboutPage'
+import ChatPage from '@/components/pages/_Cc_ChatPage'
 import LoginPage from '@/components/pages/_Cc_LoginPage'
 import SignUpPage from '@/components/pages/_Cc_SignUpPage'
 import EmailVerificationPage from '@/components/pages/_Cc_EmailVerificationPage'
@@ -13,9 +13,9 @@ export const routes: RouteConfig[] = [
     redirect: '/login'
   },
   {
-    path: '/about',
-    name: 'about',
-    component: AboutPage
+    path: '/chat',
+    name: 'chat',
+    component: ChatPage
   },
   {
     path: '/login',

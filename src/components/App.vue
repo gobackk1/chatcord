@@ -26,7 +26,7 @@ export default class Cc_App extends Vue {
         if (user.emailVerified) {
           // Googleログインのリダイレクトから戻ってきた時、アプリ内へリダイレクトさせる
           if (this.$route.name && this.$route.name.match(/(signup|login|email_verification)/)) {
-            this.$router.push('/about')
+            this.$router.push('/chat')
           }
         } else {
           if (this.$route.name && !this.$route.name.match(/email_verification/)) {
