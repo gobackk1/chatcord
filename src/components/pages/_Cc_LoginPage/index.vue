@@ -60,7 +60,7 @@ export default class Cc_SignUpPage extends Vue {
   isFormValid = false
 
   async login() {
-    // TODO: ログインメソッド実装
+    await Firebase.loginWithEmailAndPassword(this.email, this.password)
   }
   async loginWithGoogle() {
     await Firebase.loginWithGoogle()

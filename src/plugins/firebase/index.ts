@@ -9,7 +9,8 @@ import {
   sendEmailVerification,
   Auth,
   // User,
-  onAuthStateChanged
+  onAuthStateChanged,
+  signInWithEmailAndPassword
 } from 'firebase/auth'
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions'
 import { Cc_User } from '@/store/modules/profile/types'
@@ -17,13 +18,11 @@ import { Cc_User } from '@/store/modules/profile/types'
 const isLocalHost = window.location.hostname === 'localhost'
 class Firebase {
   firebaseApp: FirebaseApp | undefined = undefined
-  config!: FirebaseOptions
   auth!: Auth
   vueApp: any = null
 
   init(config: FirebaseOptions): void {
     this.firebaseApp = initializeApp(config)
-    this.config = config
 
     if (isLocalHost) {
       this.startEmulator()
@@ -53,16 +52,12 @@ class Firebase {
 
   async registerWithEmailAndPassword(email: string, password: string): Promise<void> {
     try {
-      // Firebase AUTH REST API では onAuthStateChanged が発火しない
-      // const res = await authAxios.post(`/accounts:signUp?key=${this.config.apiKey}`,{})
-
       await createUserWithEmailAndPassword(this.auth, email, password)
       /**
-       * AUTH emulator では emailVerified が機能しない
-       * https://github.com/firebase/firebase-tools/issues/3990
+       * emulator に登録したユーザの emailVerified を true にする方法
+       * https://firebase.google.com/docs/emulator-suite/connect_auth#emulated_email_email_link_and_anonymous_authentication
        */
-      if (!this.auth.currentUser) return
-      await sendEmailVerification(this.auth.currentUser)
+      await sendEmailVerification(this.auth.currentUser!)
     } catch (error) {
       if (error.message.match(/email-already-in-use/)) {
         throw new Error('このメールアドレスは既に登録されています。')
@@ -81,6 +76,10 @@ class Firebase {
   async loginWithGoogle() {
     const provider = new GoogleAuthProvider()
     await signInWithRedirect(this.auth, provider)
+  }
+
+  async loginWithEmailAndPassword(email: string, password: string) {
+    await signInWithEmailAndPassword(this.auth, email, password)
   }
 
   currentUser(): Cc_User {
