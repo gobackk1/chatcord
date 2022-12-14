@@ -79,7 +79,17 @@ class Firebase {
   }
 
   async loginWithEmailAndPassword(email: string, password: string) {
-    await signInWithEmailAndPassword(this.auth, email, password)
+    try {
+      await signInWithEmailAndPassword(this.auth, email, password)
+    } catch (error) {
+      if (error.message.match(/wrong-password/)) {
+        throw new Error('IDかパスワードが間違っています。')
+      }
+      if (error.message.match(/user-not-found/)) {
+        throw new Error('ユーザーが見つかりませんでした。')
+      }
+      throw new Error(error.message)
+    }
   }
 
   async sendEmailVerification(): Promise<void> {
