@@ -34,7 +34,7 @@ module.exports = {
         loader: 'vue-loader'
       },
       {
-        test: /\.s(c|a)ss$/,
+        test: /\.s?(c|a)ss$/,
         use: [
           {
             loader: 'vue-style-loader'
@@ -44,29 +44,6 @@ module.exports = {
             options: {
               modules: true,
               importLoaders: 2,
-              sourceMap: enableSouceMap
-            }
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sassOptions: {
-                sourceMap: enableSouceMap
-              }
-            }
-          }
-        ]
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'vue-style-loader'
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
               sourceMap: enableSouceMap
             }
           },
@@ -84,8 +61,15 @@ module.exports = {
                 ]
               }
             }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                sourceMap: enableSouceMap
+              }
+            }
           }
-        ]
       },
       {
         test: /\.html$/,
