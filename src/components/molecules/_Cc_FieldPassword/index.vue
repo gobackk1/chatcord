@@ -6,7 +6,6 @@
     hint="パスワードは 大文字・小文字・数字を含む、8~20文字で入力してください"
     maxlength="20"
     counter="20"
-    :validate-on-blur="true"
     :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
     :type="show ? 'text' : 'password'"
     :rules="rules"
