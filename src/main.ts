@@ -7,7 +7,7 @@ import { FIREBASE_CONFIG } from '@/constant'
 import App from '@/components/App'
 
 Vue.config.productionTip = false
-
+Vue.config.performance = true
 // import { getAnalytics } from 'firebase/analytics'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
