@@ -6,7 +6,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { onAuthStateChanged } from 'firebase/auth'
 import Firebase from '@/plugins/firebase'
 import Component from 'vue-class-component'
 import { namespace } from 'vuex-class'
@@ -19,23 +18,20 @@ export default class Cc_App extends Vue {
   @Profile.Action('setLoginUser') setLoginUser!: (user: Cc_User) => void
 
   created() {
-    onAuthStateChanged(Firebase.auth, user => {
+    Firebase.auth.onAuthStateChanged(user => {
+      console.log('subscribed', user)
       if (user) {
         this.setLoginUser(user)
 
-        // Googleログインのリダイレクトから戻ってきた時、アプリ内へリダイレクトさせる
-        if (this.$route.name && this.$route.name.match(/(signup|login)/)) {
-          this.$router.push('/about')
-        }
-
-        // TODO: メール認証の確認メール実装
         if (user.emailVerified) {
-          // TODO: メールによるアカウント有効化が終わったユーザーはリダイレクトさせる
+          // Googleログインのリダイレクトから戻ってきた時、アプリ内へリダイレクトさせる
+          if (this.$route.name && this.$route.name.match(/(signup|login|email_verification)/)) {
+            this.$router.push('/about')
+          }
         } else {
-          // TODO: メールによる有効化が終わっていないユーザーをリダイレクトさせる
-          // this.$router.push('/emailverify')
-          // TODO: メールによる有効化が終わっていないユーザーに、確認メールを送る
-          // user.sendEmailVerification()
+          if (this.$route.name && !this.$route.name.match(/email_verification/)) {
+            this.$router.push('/email_verification')
+          }
         }
       } else {
         this.setLoginUser(null)

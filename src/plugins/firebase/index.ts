@@ -82,6 +82,11 @@ class Firebase {
     await signInWithEmailAndPassword(this.auth, email, password)
   }
 
+  async sendEmailVerification(): Promise<void> {
+    if (!this.auth.currentUser) return
+    sendEmailVerification(this.auth.currentUser)
+  }
+
   currentUser(): Cc_User {
     return this.auth.currentUser
   }
