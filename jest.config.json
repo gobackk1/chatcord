@@ -1,9 +1,11 @@
 {
+  "roots": ["<rootDir>/src"],
   "moduleFileExtensions": ["js", "json", "vue", "ts"],
+  "preset": "ts-jest",
   "transform": {
     ".*\\.(vue)$": "vue-jest",
-    "^.+\\.tsx?$": "ts-jest",
-    "^.+\\.js$": "babel-jest"
+    "^.+\\.(ts|tsx)?$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest"
   },
   "moduleNameMapper": {
     "^@/(.*)$": "<rootDir>/src/$1"
@@ -13,7 +15,7 @@
   "collectCoverageFrom": [
     "./src/**/*.{js,vue}",
     "!**/node_modules/**",
-    "!./src/**/*.(stories|test|spec).js",
+    "!./src/**/*.(stories|test|spec).ts",
     "!src/**/*.d.ts"
   ],
   "coverageProvider": "v8",

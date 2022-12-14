@@ -4,6 +4,9 @@ const { VueLoaderPlugin } = require('vue-loader')
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const StylelintPlugin = require('stylelint-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
+const webpack = require('webpack')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const NODE_ENV = process.env.NODE_ENV
 const isDevelopment = process.env.NODE_ENV === 'development'
@@ -31,7 +34,7 @@ module.exports = {
         loader: 'vue-loader'
       },
       {
-        test: /\.s(c|a)ss$/,
+        test: /\.s?(c|a)ss$/,
         use: [
           {
             loader: 'vue-style-loader'
@@ -41,31 +44,6 @@ module.exports = {
             options: {
               modules: true,
               importLoaders: 2,
-              sourceMap: enableSouceMap
-            }
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              implementation: require('sass'),
-              sassOptions: {
-                indentedSyntax: true,
-                sourceMap: enableSouceMap
-              }
-            }
-          }
-        ]
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'vue-style-loader'
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
               sourceMap: enableSouceMap
             }
           },
@@ -81,6 +59,14 @@ module.exports = {
                     }
                   ]
                 ]
+              }
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                sourceMap: enableSouceMap
               }
             }
           }
@@ -103,6 +89,9 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new VuetifyLoaderPlugin(),
+    new Dotenv({
+      path: `./.env.${process.env.NODE_ENV}`
+    }),
     ...(isProduction
       ? [
           new HtmlWebpackPlugin({
@@ -139,7 +128,7 @@ module.exports = {
         optimization: {
           minimize: true,
           minimizer: [
-            new webpack.optimize.TerserPlugin({
+            new TerserPlugin({
               terserOptions: {
                 compress: {
                   // TODO: 効果がないので調べる。解決するまで eslint no-console: warn で代用する。
@@ -157,7 +146,9 @@ module.exports = {
             directory: path.join(__dirname, 'public')
           },
           port: 8081,
-          open: true
+          open: true,
+          hot: true,
+          historyApiFallback: true
         }
       })
 }
