@@ -9,3 +9,4 @@ export const FIREBASE_CONFIG = {
 }
 
 export const AUTH_API_ORIGIN = process.env.CC_AUTH_API_ORIGIN
+export const FIRESTORE_API_ORIGIN = process.env.CC_FIRESTORE_API_ORIGIN

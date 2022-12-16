@@ -1,5 +1,5 @@
 import { initializeApp, getApp, FirebaseOptions, FirebaseApp } from 'firebase/app'
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
+import { getFirestore, connectFirestoreEmulator, Firestore } from 'firebase/firestore'
 import {
   getAuth,
   connectAuthEmulator,
@@ -20,6 +20,7 @@ class Firebase {
   firebaseApp: FirebaseApp | undefined = undefined
   auth!: Auth
   vueApp: any = null
+  db!: Firestore
 
   init(config: FirebaseOptions): void {
     this.firebaseApp = initializeApp(config)
@@ -42,8 +43,8 @@ class Firebase {
   }
 
   startEmulator(): void {
-    const db = getFirestore()
-    connectFirestoreEmulator(db, 'localhost', 8081)
+    this.db = getFirestore(this.firebaseApp!)
+    connectFirestoreEmulator(this.db, 'localhost', 8081)
     this.auth = getAuth(this.firebaseApp)
     connectAuthEmulator(this.auth, 'http://localhost:9099')
     const functions = getFunctions(getApp())
@@ -99,6 +100,12 @@ class Firebase {
 
   currentUser(): Cc_User {
     return this.auth.currentUser
+  }
+
+  async getToken(): Promise<string | null> {
+    const user = this.auth.currentUser
+    const token = user ? await user.getIdToken() : null
+    return token
   }
 }
 

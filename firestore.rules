@@ -2,7 +2,25 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      allow read, write: if false;
+      function isAuthenticated() {
+        return request.auth != null;
+      }
+      // function isUserAuthenticated(userId) {
+      //   return request.auth != null && userId == request.auth.uid;
+      // }
+
+      match /rooms/{roomId} {
+        function isValidRoom(room) {
+          return room.size() == 1
+            && 'name' in room && room.name is string
+            && room.name.size() >= 1 && room.name.size() <= 20
+        }
+        // allow read: if isUserAuthenticated(userId);
+        // TODO: ログインかつ emailVerified
+        allow create: if isAuthenticated() && isValidRoom(request.resource.data);
+        // allow update: if isUserAuthenticated(userId) && isValidMemo(request.resource.data);
+        // allow delete: if isUserAuthenticated(userId);
+      }
     }
   }
 }
