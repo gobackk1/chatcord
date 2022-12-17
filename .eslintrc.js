@@ -26,6 +26,7 @@ module.exports = {
     'object-curly-spacing': 'off',
     'no-explicit-any': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
     'vue/multi-word-component-names': 'off', // ファイル名をなるべく index で書くため
     'vue/no-deprecated-slot-attribute': 'off' // Vue2でコーディングするため
   },
