@@ -81,7 +81,7 @@ const getType = (value: any) => {
 const transformResponseDocument = (document: any) => {
   const doc: { [key: string]: any } = { ...document }
 
-  doc.id = document.name.split('rooms/')[1]
+  doc.id = document.name.match(/.*\/(.*)$/)[1]
   delete doc.name
 
   for (const [key, value] of Object.entries<any>(document.fields)) {
