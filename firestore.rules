@@ -48,7 +48,8 @@ service cloud.firestore {
                 && message.text.size() >= 1 && message.text.size() <=200
             }
             allow read: if isAuthenticated() && isParentRoomMember();
-          allow create: if isAuthenticated() && isValidChannel(request.resource.data) && !isParentRoomMember();
+            allow create: if isAuthenticated() && isValidMessage(request.resource.data) && isParentRoomMember();
+          }
         }
       }
     }
