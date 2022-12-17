@@ -24,6 +24,17 @@ const firestoreAxios = axios.create({
       return { fields }
     },
     ...(axios.defaults.transformRequest as AxiosRequestTransformer[])
+  ],
+  transformResponse: [
+    ...(axios.defaults.transformResponse as AxiosResponseTransformer[]),
+    (data: any) => {
+      console.log('transformResponse data', data)
+      if (data.documents) {
+        return data.documents.map((document: any) => transformResponseDocument(document))
+      } else {
+        return transformResponseDocument(data)
+      }
+    }
   ]
 })
 firestoreAxios.interceptors.request.use(
@@ -43,5 +54,32 @@ const getType = (value: any) => {
   if (typeof value === 'object') return 'mapValue'
   return 'stringValue'
 }
+
+const transformResponseDocument = (document: any) => {
+  const doc: { [key: string]: any } = { ...document }
+
+  doc.id = document.name.split('rooms/')[1]
+  delete doc.name
+
+  for (const [key, value] of Object.entries<any>(document.fields)) {
+    if (value.mapValue) {
+      // NOTE: ※1
+      for (const [innerKey, innerValue] of Object.entries<any>(value.mapValue.fields)) {
+        doc[key] = {
+          [innerKey]: Object.values(innerValue)[0]
+        }
+      }
+    } else {
+      doc[key] = Object.values(value)[0]
+    }
+  }
+  delete doc.fields
+
+  return doc
+}
+
+/**
+ * ※1: mapは１段目のみ対応。
+ */
 
 export { authAxios, firestoreAxios }
