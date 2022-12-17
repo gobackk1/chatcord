@@ -1,8 +1,8 @@
 import { MutationTree } from 'vuex'
-import { RoomsState, Cc_Room } from '../types'
+import { RoomsState, RoomType } from '../types'
 
 const mutations: MutationTree<RoomsState> = {
-  ADD_ROOM(state, payload: Cc_Room) {
+  ADD_ROOM(state, payload: RoomType) {
     state.rooms.push(payload)
   }
 }

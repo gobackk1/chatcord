@@ -1,14 +1,25 @@
 export interface RoomsState {
-  rooms: Cc_Room[]
+  rooms: RoomType[]
 }
 
-export type Cc_Room = {
-  // channels: any
-  // members: any
+export type RoomType = {
+  id: string
+  name: string
+  displayName: string // アバターがない時に表示する名前
+  // channels: {
+  //   name: string // チャンネル名: collection reference
+  // }
+  members: {
+    [key: string]: 'member' | 'admin'
+  }
+  /**
+   * TODO: チャットルームのアバター画像をアップロードして設定する
+   * 1. webui から storage へ画像をアップロード
+   * 2. documentoのアバターにurl を追加
+   */
   // avatar: any
-  name: any
-  // displayName: any
+  createTime: string
+  updateTime: string
 }
-
 // channel type
 // member type
