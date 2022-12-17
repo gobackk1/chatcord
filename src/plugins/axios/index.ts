@@ -54,6 +54,10 @@ const firestoreAxios = axios.create({
       console.log('transformResponse data', data)
       if (Array.isArray(data)) {
         return data.map(({ document }: any) => transformResponseDocument(document))
+      } else if (data.documents) {
+        return data.documents.map((document: any) => transformResponseDocument(document))
+      } else if (!Object.keys(data).length) {
+        return data
       } else {
         return transformResponseDocument(data)
       }
