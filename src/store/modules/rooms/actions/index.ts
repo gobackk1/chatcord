@@ -10,7 +10,7 @@ const actions: ActionTree<RoomsState, RootState> = {
         name,
         displayName: name,
         members: {
-          [rootGetters['profile/uid']]: 'admin'
+          [`_${rootGetters['profile/uid']}`]: 'admin'
         }
       }
       const { data } = await firestoreAxios.post('documents/rooms', room)
@@ -30,7 +30,7 @@ const actions: ActionTree<RoomsState, RootState> = {
         where: {
           fieldFilter: {
             field: {
-              fieldPath: `members.${rootGetters['profile/uid']}`
+              fieldPath: `members._${rootGetters['profile/uid']}`
             },
             op: 'IN',
             value: {
