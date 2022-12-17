@@ -1,4 +1,4 @@
-import axios, { AxiosRequestTransformer } from 'axios'
+import axios, { AxiosRequestTransformer, AxiosResponseTransformer } from 'axios'
 import { AUTH_API_ORIGIN, FIREBASE_CONFIG, FIRESTORE_API_ORIGIN } from '@/constant'
 import Firebase from '@/plugins/firebase'
 
@@ -14,13 +14,33 @@ const firestoreAxios = axios.create({
      * JSONがObjectにならないよう、defaults.transformRequest より前に実行する。
      */
     (data: any) => {
+      if (data === undefined) return data
+
       const fields: { [key: string]: { [key: string]: any } } = {}
       for (const [key, value] of Object.entries<any>(data)) {
         const valueType = getType(value)
-        fields[key] = {
-          [`${valueType}`]: value
+
+        if (valueType === 'mapValue') {
+          // NOTE: ※1
+          for (const [innerKey, innerValue] of Object.entries<any>(value)) {
+            const innerValueType = getType(innerValue)
+            fields[key] = {
+              [`${valueType}`]: {
+                fields: {
+                  [innerKey]: {
+                    [innerValueType]: innerValue
+                  }
+                }
+              }
+            }
+          }
+        } else {
+          fields[key] = {
+            [`${valueType}`]: value
+          }
         }
       }
+
       return { fields }
     },
     ...(axios.defaults.transformRequest as AxiosRequestTransformer[])
