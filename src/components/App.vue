@@ -9,17 +9,18 @@ import Vue from 'vue'
 import Firebase from '@/plugins/firebase'
 import Component from 'vue-class-component'
 import { namespace } from 'vuex-class'
-import { Cc_User } from '../store/modules/profile/types'
+import { UserType } from '../store/modules/profile/types'
+import { onAuthStateChanged } from 'firebase/auth'
 
 const Profile = namespace('profile')
 
 @Component
 export default class Cc_App extends Vue {
-  @Profile.Action('setLoginUser') setLoginUser!: (user: Cc_User) => void
+  @Profile.Action('setLoginUser') setLoginUser!: (user: UserType) => void
 
   created() {
-    Firebase.auth.onAuthStateChanged(user => {
-      console.log('subscribed', user)
+    onAuthStateChanged(Firebase.auth, user => {
+      console.log('subscribed user', user)
       if (user) {
         this.setLoginUser(user)
 
