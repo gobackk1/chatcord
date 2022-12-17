@@ -13,15 +13,36 @@ const actions: ActionTree<RoomsState, RootState> = {
           [rootGetters['profile/uid']]: 'admin'
         }
       }
-      const { data } = await firestoreAxios.post('/rooms', room)
+      const { data } = await firestoreAxios.post('documents/rooms', room)
       commit('ADD_ROOM', data)
     } catch (error) {
       throw new Error(error.message)
     }
   },
-  async fetchRooms({ commit }): Promise<void> {
+  async fetchRooms({ commit, rootGetters }): Promise<void> {
     try {
-      const response = await firestoreAxios.get('/rooms')
+      const structuredQuery = {
+        from: [
+          {
+            collectionId: 'rooms'
+          }
+        ],
+        where: {
+          fieldFilter: {
+            field: {
+              fieldPath: `members.${rootGetters['profile/uid']}`
+            },
+            op: 'IN',
+            value: {
+              arrayValue: {
+                values: [{ stringValue: 'admin' }, { stringValue: 'member' }]
+              }
+            }
+          }
+        }
+      }
+
+      const response = await firestoreAxios.post('documents:runQuery', { structuredQuery })
 
       response.data.forEach((data: RoomType) => {
         commit('ADD_ROOM', data)

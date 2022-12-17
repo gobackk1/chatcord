@@ -7,41 +7,44 @@ const authAxios = axios.create({
 })
 
 const firestoreAxios = axios.create({
-  baseURL: `${FIRESTORE_API_ORIGIN}/v1/projects/${FIREBASE_CONFIG.projectId}/databases/(default)/documents/`,
+  baseURL: `${FIRESTORE_API_ORIGIN}/v1/projects/${FIREBASE_CONFIG.projectId}/databases/(default)/`,
   transformRequest: [
     /**
      * NOTE:
      * JSONがObjectにならないよう、defaults.transformRequest より前に実行する。
      */
     (data: any) => {
-      if (data === undefined) return data
+      if (data === undefined) return
+      console.log('transformRequest data', data)
+      if (data.structuredQuery) {
+        return data
+      } else {
+        const fields: { [key: string]: { [key: string]: any } } = {}
+        for (const [key, value] of Object.entries<any>(data)) {
+          const valueType = getType(value)
 
-      const fields: { [key: string]: { [key: string]: any } } = {}
-      for (const [key, value] of Object.entries<any>(data)) {
-        const valueType = getType(value)
-
-        if (valueType === 'mapValue') {
-          // NOTE: ※1
-          for (const [innerKey, innerValue] of Object.entries<any>(value)) {
-            const innerValueType = getType(innerValue)
-            fields[key] = {
-              [`${valueType}`]: {
-                fields: {
-                  [innerKey]: {
-                    [innerValueType]: innerValue
+          if (valueType === 'mapValue') {
+            // NOTE: ※1
+            for (const [innerKey, innerValue] of Object.entries<any>(value)) {
+              const innerValueType = getType(innerValue)
+              fields[key] = {
+                [`${valueType}`]: {
+                  fields: {
+                    [innerKey]: {
+                      [innerValueType]: innerValue
+                    }
                   }
                 }
               }
             }
-          }
-        } else {
-          fields[key] = {
-            [`${valueType}`]: value
+          } else {
+            fields[key] = {
+              [`${valueType}`]: value
+            }
           }
         }
+        return { fields }
       }
-
-      return { fields }
     },
     ...(axios.defaults.transformRequest as AxiosRequestTransformer[])
   ],
@@ -49,8 +52,8 @@ const firestoreAxios = axios.create({
     ...(axios.defaults.transformResponse as AxiosResponseTransformer[]),
     (data: any) => {
       console.log('transformResponse data', data)
-      if (data.documents) {
-        return data.documents.map((document: any) => transformResponseDocument(document))
+      if (Array.isArray(data)) {
+        return data.map(({ document }: any) => transformResponseDocument(document))
       } else {
         return transformResponseDocument(data)
       }

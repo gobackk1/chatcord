@@ -18,7 +18,10 @@ service cloud.firestore {
             && room.displayName.size() >= 1 && room.displayName.size() <= 20
             && 'members' in room && room.members is map
         }
-        allow read: if isAuthenticated();
+        function isRoomMember() {
+          return request.auth.uid in resource.data.members
+        }
+        allow read: if isAuthenticated() && isRoomMember();
         // TODO: ログインかつ emailVerified
         allow create: if isAuthenticated() && isValidRoom(request.resource.data);
         // allow update: if isUserAuthenticated(userId) && isValidMemo(request.resource.data);
