@@ -18,7 +18,8 @@ module.exports = {
   // context: path.resolve(__dirname, './src'),
   output: {
     path: `${__dirname}/dist`,
-    filename: 'main.js'
+    filename: 'main.js',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -140,7 +141,7 @@ module.exports = {
         }
       }
     : {
-        devtool: isDevelopment ? 'source-map' : false,
+        devtool: 'source-map',
         devServer: {
           static: {
             directory: path.join(__dirname, 'public')
