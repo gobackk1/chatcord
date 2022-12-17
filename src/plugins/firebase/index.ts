@@ -14,6 +14,7 @@ import {
 } from 'firebase/auth'
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions'
 import { UserType } from '@/store/modules/profile/types'
+import store from '@/store'
 
 const isLocalHost = window.location.hostname === 'localhost'
 class Firebase {
@@ -33,8 +34,9 @@ class Firebase {
   }
 
   initVueApp(vueInstance: any) {
-    const unsubscribe = onAuthStateChanged(this.auth, () => {
+    const unsubscribe = onAuthStateChanged(this.auth, async user => {
       if (!this.vueApp) {
+        await store.dispatch('profile/setLoginUser', user)
         this.vueApp = vueInstance
         this.vueApp.$mount('#app')
         unsubscribe()
