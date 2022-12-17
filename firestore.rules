@@ -11,11 +11,14 @@ service cloud.firestore {
 
       match /rooms/{roomId} {
         function isValidRoom(room) {
-          return room.size() == 1
+          return room.size() == 3
             && 'name' in room && room.name is string
             && room.name.size() >= 1 && room.name.size() <= 20
+            && 'displayName' in room && room.displayName is string
+            && room.displayName.size() >= 1 && room.displayName.size() <= 20
+            && 'members' in room && room.members is map
         }
-        // allow read: if isUserAuthenticated(userId);
+        allow read: if isAuthenticated();
         // TODO: ログインかつ emailVerified
         allow create: if isAuthenticated() && isValidRoom(request.resource.data);
         // allow update: if isUserAuthenticated(userId) && isValidMemo(request.resource.data);
