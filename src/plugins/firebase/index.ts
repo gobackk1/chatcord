@@ -13,7 +13,7 @@ import {
   signInWithEmailAndPassword
 } from 'firebase/auth'
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions'
-import { Cc_User } from '@/store/modules/profile/types'
+import { UserType } from '@/store/modules/profile/types'
 
 const isLocalHost = window.location.hostname === 'localhost'
 class Firebase {
@@ -98,7 +98,7 @@ class Firebase {
     sendEmailVerification(this.auth.currentUser)
   }
 
-  currentUser(): Cc_User {
+  currentUser(): UserType {
     return this.auth.currentUser
   }
 
