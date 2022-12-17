@@ -38,7 +38,9 @@ firestoreAxios.interceptors.request.use(
 )
 
 const getType = (value: any) => {
+  if (value === 'REQUEST_TIME') return 'timestampValue'
   if (typeof value === 'number') return 'numberValue'
+  if (typeof value === 'object') return 'mapValue'
   return 'stringValue'
 }
 
