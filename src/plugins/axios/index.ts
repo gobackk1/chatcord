@@ -53,7 +53,12 @@ const firestoreAxios = axios.create({
     (data: any) => {
       console.log('transformResponse data', data)
       if (Array.isArray(data)) {
-        return data.map(({ document }: any) => transformResponseDocument(document))
+        if (data.length === 1 && data[0].readTime) {
+          // NOTE: クエリ結果が空で readTime しか入ってない場合はリターンする
+          return []
+        } else {
+          return data.map(({ document }: any) => transformResponseDocument(document))
+        }
       } else if (data.documents) {
         return data.documents.map((document: any) => transformResponseDocument(document))
       } else if (!Object.keys(data).length) {
