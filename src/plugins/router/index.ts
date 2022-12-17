@@ -18,6 +18,14 @@ export const routes: RouteConfig[] = [
     component: ChatPage
   },
   {
+    path: '/chat/:roomId',
+    component: ChatPage
+  },
+  {
+    path: '/chat/:roomId/channel/:channelId',
+    component: ChatPage
+  },
+  {
     path: '/login',
     name: 'login',
     component: LoginPage
