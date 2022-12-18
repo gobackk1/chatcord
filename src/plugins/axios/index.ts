@@ -62,7 +62,7 @@ const firestoreAxios = axios.create({
     (data: any) => {
       console.log('transformResponse data', data)
       if (Array.isArray(data)) {
-        if (data.length === 1 && data[0].readTime) {
+        if (data.length === 1 && !data[0].document && data[0].readTime) {
           // NOTE: クエリ結果が空で readTime しか入ってない場合はリターンする
           return []
         } else {
@@ -70,7 +70,7 @@ const firestoreAxios = axios.create({
         }
       } else if (data.documents) {
         return data.documents.map((document: any) => transformResponseDocument(document))
-      } else if (!Object.keys(data).length) {
+      } else if (!Object.keys(data).length || data.error) {
         return data
       } else {
         return transformResponseDocument(data)
@@ -123,4 +123,4 @@ const transformResponseDocument = (document: any) => {
  * ※1: mapは１段目のみ対応。
  */
 
-export { authAxios, firestoreAxios }
+export { authAxios, firestoreAxios, functionsAxios }
