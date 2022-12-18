@@ -13,16 +13,19 @@ import { UserType } from '../store/modules/profile/types'
 import { onAuthStateChanged } from 'firebase/auth'
 
 const Profile = namespace('profile')
+const Rooms = namespace('rooms')
 
 @Component
 export default class Cc_App extends Vue {
   @Profile.Action('setLoginUser') setLoginUser!: (user: UserType) => void
   @Profile.Action('setPublicData') setPublicData!: (user: UserType) => void
+  @Rooms.Action('fetchRooms') fetchRooms!: any
 
   created() {
     onAuthStateChanged(Firebase.auth, async user => {
       console.log('subscribed user', user)
       if (user) {
+        await this.fetchRooms()
         this.setLoginUser(user)
 
         if (user.emailVerified) {
