@@ -3,6 +3,8 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import ChatPage from '@/components/pages/_Cc_ChatPage'
 import LoginPage from '@/components/pages/_Cc_LoginPage'
 import SignUpPage from '@/components/pages/_Cc_SignUpPage'
+import UsersHomePage from '@/components/pages/_Cc_UsersHomePage'
+import FriendList from '@/components/organisms/_Cc_FriendList'
 import EmailVerificationPage from '@/components/pages/_Cc_EmailVerificationPage'
 
 Vue.use(VueRouter)
@@ -24,6 +26,16 @@ export const routes: RouteConfig[] = [
   {
     path: '/chat/:roomId/channel/:channelId',
     component: ChatPage
+  },
+  {
+    path: '/me',
+    component: UsersHomePage,
+    children: [
+      {
+        path: 'friends',
+        component: FriendList
+      }
+    ]
   },
   {
     path: '/login',
