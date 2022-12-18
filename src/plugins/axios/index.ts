@@ -1,9 +1,18 @@
 import axios, { AxiosRequestTransformer, AxiosResponseTransformer } from 'axios'
-import { AUTH_API_ORIGIN, FIREBASE_CONFIG, FIRESTORE_API_ORIGIN } from '@/constant'
+import {
+  AUTH_API_ORIGIN,
+  FIREBASE_CONFIG,
+  FIRESTORE_API_ORIGIN,
+  FUNCTIONS_API_ORIGIN
+} from '@/constant'
 import Firebase from '@/plugins/firebase'
 
 const authAxios = axios.create({
   baseURL: `${AUTH_API_ORIGIN}/`
+})
+
+const functionsAxios = axios.create({
+  baseURL: `${FUNCTIONS_API_ORIGIN}/`
 })
 
 const firestoreAxios = axios.create({

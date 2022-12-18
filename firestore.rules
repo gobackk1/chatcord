@@ -21,10 +21,10 @@ service cloud.firestore {
             && room.name.size() >= 1 && room.name.size() <= 20
             && 'displayName' in room && room.displayName is string
             && room.displayName.size() >= 1 && room.displayName.size() <= 20
-            && 'members' in room && room.members is map
+            && 'members' in room && room.members is map;
         }
         function isRoomMember() {
-          return resource.data.members['_' + request.auth.uid].matches('member|admin')
+          return resource.data.members['_' + request.auth.uid].matches('member|admin');
         }
         allow read: if isAuthenticated() && isRoomMember();
         // TODO: ログインかつ emailVerified
@@ -38,7 +38,7 @@ service cloud.firestore {
               && 'name' in channel && channel.name is string
               && channel.name.size() >=1 && channel.name.size() <=20
               && 'topic' in channel && channel.topic is string
-              && channel.topic.size() >=0 && channel.topic.size() <=200
+              && channel.topic.size() >=0 && channel.topic.size() <=200;
           }
           function isParentRoomMember() {
             return get(/databases/$(database)/documents/rooms/$(roomId)).data.members['_' + request.auth.uid].matches('member|admin');
@@ -50,7 +50,7 @@ service cloud.firestore {
             function isValidMessage(message) {
               return message.size() == 1
                 && 'text' in message && message.text is string
-                && message.text.size() >= 1 && message.text.size() <=200
+                && message.text.size() >= 1 && message.text.size() <=200;
             }
             allow read: if isAuthenticated() && isParentRoomMember();
             allow create: if isAuthenticated() && isValidMessage(request.resource.data) && isParentRoomMember();
