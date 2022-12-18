@@ -1,4 +1,4 @@
-import { initializeApp, getApp, FirebaseOptions, FirebaseApp } from 'firebase/app'
+import { initializeApp, FirebaseOptions, FirebaseApp } from 'firebase/app'
 import { getFirestore, connectFirestoreEmulator, Firestore } from 'firebase/firestore'
 import {
   getAuth,
@@ -46,10 +46,10 @@ class Firebase {
 
   startEmulator(): void {
     this.db = getFirestore(this.firebaseApp!)
-    connectFirestoreEmulator(this.db, 'localhost', 8081)
+    connectFirestoreEmulator(this.db, 'localhost', 8888)
     this.auth = getAuth(this.firebaseApp)
     connectAuthEmulator(this.auth, 'http://localhost:9099')
-    const functions = getFunctions(getApp())
+    const functions = getFunctions(this.firebaseApp)
     connectFunctionsEmulator(functions, 'localhost', 5001)
   }
 
