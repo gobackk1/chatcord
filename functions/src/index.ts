@@ -17,7 +17,8 @@ export const addPublicUserData = functions
   .auth.user()
   .onCreate(user => {
     const publicUserData = {
-      displayName: user.displayName!
+      displayName: user.displayName!,
+      photoURL: user.photoURL || ''
     }
     return admin
       .firestore()
