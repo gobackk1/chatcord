@@ -43,7 +43,7 @@ const actions: ActionTree<RoomsState, RootState> = {
       }
 
       const response = await firestoreAxios.post('documents:runQuery', { structuredQuery })
-
+      if (!response.data.length) return
       response.data.forEach((data: RoomType) => {
         commit('ADD_ROOM', data)
       })
