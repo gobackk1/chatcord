@@ -149,7 +149,11 @@ module.exports = {
           port: 8081,
           open: true,
           hot: true,
-          historyApiFallback: true
+          historyApiFallback: true,
+          client: {
+            logging: 'none',
+            overlay: false
+          }
         }
       })
 }
