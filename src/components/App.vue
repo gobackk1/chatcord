@@ -7,26 +7,23 @@
 <script lang="ts">
 import Vue from 'vue'
 import Firebase from '@/plugins/firebase'
-import Component from 'vue-class-component'
-import { namespace } from 'vuex-class'
-import { UserType } from '../store/modules/profile/types'
 import { onAuthStateChanged } from 'firebase/auth'
+import { loginUserStore, chatRoomsStore } from '@/store'
 
-const Profile = namespace('profile')
-const Rooms = namespace('rooms')
-
-@Component
-export default class Cc_App extends Vue {
-  @Profile.Action('setLoginUser') setLoginUser!: (user: UserType) => void
-  @Profile.Action('setPublicData') setPublicData!: (user: UserType) => void
-  @Rooms.Action('fetchRooms') fetchRooms!: any
-
+export default Vue.extend({
+  data() {
+    return {
+      loginUserActions: loginUserStore.actions,
+      loginUser: loginUserStore.state,
+      chatRoomsActions: chatRoomsStore.actions
+    }
+  },
   created() {
-    onAuthStateChanged(Firebase.auth, async user => {
+    onAuthStateChanged(Firebase.auth, async (user) => {
       console.log('subscribed user', user)
       if (user) {
-        await this.fetchRooms()
-        this.setLoginUser(user)
+        this.loginUserActions.setUserData(user)
+        await this.chatRoomsActions.fetchRooms(this.loginUser.userData!.uid)
 
         if (user.emailVerified) {
           // Googleログインのリダイレクトから戻ってきた時、アプリ内へリダイレクトさせる
@@ -39,9 +36,9 @@ export default class Cc_App extends Vue {
           }
         }
       } else {
-        this.setLoginUser(null)
+        this.loginUserActions.setUserData(null)
       }
     })
   }
-}
+})
 </script>
