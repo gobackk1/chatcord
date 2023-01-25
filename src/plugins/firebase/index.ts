@@ -1,5 +1,5 @@
-import { initializeApp, getApp, FirebaseOptions, FirebaseApp } from 'firebase/app'
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
+import { initializeApp, FirebaseOptions, FirebaseApp } from 'firebase/app'
+import { getFirestore, connectFirestoreEmulator, Firestore } from 'firebase/firestore'
 import {
   getAuth,
   connectAuthEmulator,
@@ -13,13 +13,15 @@ import {
   signInWithEmailAndPassword
 } from 'firebase/auth'
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions'
-import { Cc_User } from '@/store/modules/profile/types'
+import { UserType } from '@/store/modules/profile/types'
+import store from '@/store'
 
 const isLocalHost = window.location.hostname === 'localhost'
 class Firebase {
   firebaseApp: FirebaseApp | undefined = undefined
   auth!: Auth
   vueApp: any = null
+  db!: Firestore
 
   init(config: FirebaseOptions): void {
     this.firebaseApp = initializeApp(config)
@@ -32,8 +34,9 @@ class Firebase {
   }
 
   initVueApp(vueInstance: any) {
-    const unsubscribe = onAuthStateChanged(this.auth, () => {
+    const unsubscribe = onAuthStateChanged(this.auth, async user => {
       if (!this.vueApp) {
+        await store.dispatch('profile/setLoginUser', user)
         this.vueApp = vueInstance
         this.vueApp.$mount('#app')
         unsubscribe()
@@ -42,11 +45,11 @@ class Firebase {
   }
 
   startEmulator(): void {
-    const db = getFirestore()
-    connectFirestoreEmulator(db, 'localhost', 8081)
+    this.db = getFirestore(this.firebaseApp!)
+    connectFirestoreEmulator(this.db, 'localhost', 8888)
     this.auth = getAuth(this.firebaseApp)
     connectAuthEmulator(this.auth, 'http://localhost:9099')
-    const functions = getFunctions(getApp())
+    const functions = getFunctions(this.firebaseApp)
     connectFunctionsEmulator(functions, 'localhost', 5001)
   }
 
@@ -97,8 +100,14 @@ class Firebase {
     sendEmailVerification(this.auth.currentUser)
   }
 
-  currentUser(): Cc_User {
+  currentUser(): UserType {
     return this.auth.currentUser
+  }
+
+  async getToken(): Promise<string | null> {
+    const user = this.auth.currentUser
+    const token = user ? await user.getIdToken() : null
+    return token
   }
 }
 

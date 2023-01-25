@@ -7,26 +7,28 @@
 <script lang="ts">
 import Vue from 'vue'
 import Firebase from '@/plugins/firebase'
-import Component from 'vue-class-component'
-import { namespace } from 'vuex-class'
-import { Cc_User } from '../store/modules/profile/types'
+import { onAuthStateChanged } from 'firebase/auth'
+import { loginUserStore, chatRoomsStore } from '@/store'
 
-const Profile = namespace('profile')
-
-@Component
-export default class Cc_App extends Vue {
-  @Profile.Action('setLoginUser') setLoginUser!: (user: Cc_User) => void
-
+export default Vue.extend({
+  data() {
+    return {
+      loginUserActions: loginUserStore.actions,
+      loginUser: loginUserStore.state,
+      chatRoomsActions: chatRoomsStore.actions
+    }
+  },
   created() {
-    Firebase.auth.onAuthStateChanged(user => {
-      console.log('subscribed', user)
+    onAuthStateChanged(Firebase.auth, async (user) => {
+      console.log('subscribed user', user)
       if (user) {
-        this.setLoginUser(user)
+        this.loginUserActions.setUserData(user)
+        await this.chatRoomsActions.fetchRooms(this.loginUser.userData!.uid)
 
         if (user.emailVerified) {
           // Googleログインのリダイレクトから戻ってきた時、アプリ内へリダイレクトさせる
           if (this.$route.name && this.$route.name.match(/(signup|login|email_verification)/)) {
-            this.$router.push('/about')
+            this.$router.push('/chat')
           }
         } else {
           if (this.$route.name && !this.$route.name.match(/email_verification/)) {
@@ -34,9 +36,9 @@ export default class Cc_App extends Vue {
           }
         }
       } else {
-        this.setLoginUser(null)
+        this.loginUserActions.setUserData(null)
       }
     })
   }
-}
+})
 </script>

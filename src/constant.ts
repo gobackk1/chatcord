@@ -9,3 +9,8 @@ export const FIREBASE_CONFIG = {
 }
 
 export const AUTH_API_ORIGIN = process.env.CC_AUTH_API_ORIGIN
+export const FIRESTORE_API_ORIGIN = process.env.CC_FIRESTORE_API_ORIGIN
+export const FUNCTIONS_API_ORIGIN = process.env.CC_FUNCTIONS_API_ORIGIN!.replace(
+  '<project-id>',
+  FIREBASE_CONFIG.projectId
+)

@@ -22,10 +22,11 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'never'],
-    // "no-console": "warn", // 開発中はオフ
+    // 'no-console': 'warn', // 開発中はオフ
     'object-curly-spacing': 'off',
     'no-explicit-any': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
     'vue/multi-word-component-names': 'off', // ファイル名をなるべく index で書くため
     'vue/no-deprecated-slot-attribute': 'off' // Vue2でコーディングするため
   },
